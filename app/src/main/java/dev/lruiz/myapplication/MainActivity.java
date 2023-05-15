@@ -1,8 +1,11 @@
 package dev.lruiz.myapplication;
 
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     String provider;
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
+    int requestCode = 200;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +43,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+
+            verificarPermisos();
+
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
-
     }
 
     @Override
@@ -64,6 +72,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.d("Latitude","status");
+    }
+
+    private void verificarPermisos(){
+        int permisoLoc1 = ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_FINE_LOCATION);
+        int permisoLoc2 = ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
+        if(permisoLoc1 == PackageManager.PERMISSION_GRANTED){
+            //Método permision aceptado
+        }else{
+            requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},requestCode);
+        }
+
+        if(permisoLoc2 == PackageManager.PERMISSION_GRANTED){
+            //Método permision aceptado
+        }else{
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},requestCode);
+        }
+
     }
 
 }
