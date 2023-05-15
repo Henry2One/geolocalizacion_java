@@ -1,6 +1,5 @@
 package dev.lruiz.myapplication;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,6 +25,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     protected String latitude, longitude;
     protected boolean gps_enabled, network_enabled;
     int requestCode = 200;
+    double latitud,longitud;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onLocationChanged(Location location) {
         txtLat = findViewById(R.id.textview1);
         txtLat.setText("Latitude:" + location.getLatitude() + ", Longitude:" + location.getLongitude());
+        latitud = location.getLatitude();
+        longitud = location.getLongitude();
     }
 
     @Override
